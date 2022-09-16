@@ -2,9 +2,7 @@
 <html>
 <head>
 <style>
-body {
-margin:0;
-}
+body { margin:0; }
 </style>
 <script type="text/javascript" src="js/libs_origin/three_140.js"></script>
 <script type="text/javascript" src="js/libs_modified/OBJLoader.js"></script>
@@ -33,21 +31,21 @@ let fs=[];
 <body>
 <div id="project" style="font-family:tahoma;">
 <div id="loading" style="background:#ffffff;">
-<div style="position:absolute;display:block;top:50%;width:100%;text-align:center;font-family:arial;font-size:40px;color:#ffffff;text-shadow:1px 1px 4px #393342;">«¿√–”∆≈ÕŒ <span id="loading_amount"></span></div>
+<div style="position:absolute;display:block;top:50%;width:100%;text-align:center;font-family:arial;font-size:40px;color:#ffffff;text-shadow:1px 1px 4px #393342;">√á√Ä√É√ê√ì√Ü√Ö√ç√é <span id="loading_amount"></span></div>
 </div>
 <canvas id="canvas" width="800" height="600" style="display:block;"></canvas>
 </div>
 <script type="text/javascript">
 
 
-// ____________________ Õ¿—“–Œ… » ¿ÀÃ¿«¿ » »— – ____________________
+// ____________________ √ç√Ä√ë√í√ê√é√â√ä√à √Ä√ã√å√Ä√á√Ä √à √à√ë√ä√ê ____________________
 
 
 let diamond_settings=[];
 
 
 diamond_settings["diamond_1"]=[];
-// «ƒ≈—‹ Ã¿—ÿ“¿¡ »— – —“¿¬»Ã 4, “¿   ¿  ¬  ŒÕ÷≈ ÃŒƒ≈À‹ ¿ÀÃ¿«¿ “Œ∆≈ ”¬≈À»◊»¬¿≈“—ﬂ Õ¿ 4
+// √á√Ñ√Ö√ë√ú √å√Ä√ë√ò√í√Ä√Å √à√ë√ä√ê √ë√í√Ä√Ç√à√å 4, √í√Ä√ä √ä√Ä√ä √Ç √ä√é√ç√ñ√Ö √å√é√Ñ√Ö√ã√ú √Ä√ã√å√Ä√á√Ä √í√é√Ü√Ö √ì√Ç√Ö√ã√à√ó√à√Ç√Ä√Ö√í√ë√ü √ç√Ä 4
 diamond_settings["diamond_1"]["1_2"]={quality_px:1024,sparks_scale:4,sparks_amount:10,sparks_intensity:1,
 material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0,y:0,z:0},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:2.417,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
 diamond_settings["diamond_1"]["1_3"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
@@ -115,7 +113,7 @@ tex["shadow"]=texture_loader.load("textures/shadow.png");
 tex["environment_metal"]=null;
 
 
-// FOV 10, ◊“Œ¡€ À”◊ÿ≈ Œ“Œ¡–¿∆¿À¿—‹ “≈ —“”–¿ envMap
+// FOV 10, √ó√í√é√Å√õ √ã√ì√ó√ò√Ö √é√í√é√Å√ê√Ä√Ü√Ä√ã√Ä√ë√ú √í√Ö√ä√ë√í√ì√ê√Ä envMap
 let camera=new THREE.PerspectiveCamera(10,window.innerWidth/window.innerHeight,0.01,2000);
 camera.position.set(0,0.1,0.6);
 
@@ -144,20 +142,20 @@ scene.environment=tex["environment_metal"];
 });
 
 
-// ____________________  ”¡»◊≈— ¿ﬂ “≈ —“”–¿ ƒÀﬂ ¿ÀÃ¿«¿ ____________________
+// ____________________ √ä√ì√Å√à√ó√Ö√ë√ä√Ä√ü √í√Ö√ä√ë√í√ì√ê√Ä √Ñ√ã√ü √Ä√ã√å√Ä√á√Ä ____________________
 
 
 let diamond_normal_texture=new THREE.WebGLCubeRenderTarget();
 let diamond_cube_camera=new THREE.CubeCamera(0.0001,1000,diamond_normal_texture);
 
 
-// ____________________ »— –€ ____________________
+// ____________________ √à√ë√ä√ê√õ ____________________
 
 
 let particles_diamond_spark_a=[];
 
 
-// ____________________ “≈Õ‹ ____________________
+// ____________________ √í√Ö√ç√ú ____________________
 
 
 mat["shadow"]=new THREE.MeshBasicMaterial({
@@ -178,7 +176,7 @@ function diamond_generate(){
 // DIAMOND 1
 
 
-// —“¿¬»Ã »Ã≈ÕÕŒ “¿ »≈ Õ¿◊¿À‹Õ€≈ «Õ¿◊≈Õ»ﬂ, ¿ Ã≈Õﬂ≈Ã Õ»∆≈
+// √ë√í√Ä√Ç√à√å √à√å√Ö√ç√ç√é √í√Ä√ä√à√Ö √ç√Ä√ó√Ä√ã√ú√ç√õ√Ö √á√ç√Ä√ó√Ö√ç√à√ü, √Ä √å√Ö√ç√ü√Ö√å √ç√à√Ü√Ö
 mesh["diamond"].scale.set(1,1,1);
 mesh["diamond"].position.set(0,0,0);
 mesh["diamond"].rotation.set(0,0,0);
@@ -202,7 +200,7 @@ if(diamond_settings["diamond_1"][child.name]!=undefined){
 
 
 diamond_gem_add(child,diamond_settings["diamond_1"][child.name]);
-// diamond_spark_add(Œ¡⁄≈ “, ŒÀ»◊≈Õ—“¬Œ »— –,»Õ“≈Õ—»¬ÕŒ—“‹,Ã¿—ÿ“¿¡);
+// diamond_spark_add(√é√Å√ö√Ö√ä√í,√ä√é√ã√à√ó√Ö√ç√ë√í√Ç√é √à√ë√ä√ê,√à√ç√í√Ö√ç√ë√à√Ç√ç√é√ë√í√ú,√å√Ä√ë√ò√í√Ä√Å);
 diamond_spark_add(child,diamond_settings["diamond_1"][child.name]);
 
 
@@ -212,7 +210,7 @@ diamond_spark_add(child,diamond_settings["diamond_1"][child.name]);
 });
 
 
-// Ã≈Õﬂ≈Ã  ¿  Õ¿ƒŒ
+// √å√Ö√ç√ü√Ö√å √ä√Ä√ä √ç√Ä√Ñ√é
 mesh["diamond"].scale.set(4,4,4);
 mesh["diamond"].rotation.x=-1.57;
 mesh["diamond"].position.y=0.05;
@@ -225,7 +223,7 @@ diamond_spark_generate(mesh["diamond"],"diamond_spark_1");
 // DIAMOND 2
 
 
-// —“¿¬»Ã »Ã≈ÕÕŒ “¿ »≈ Õ¿◊¿À‹Õ€≈ «Õ¿◊≈Õ»ﬂ, ¿ Ã≈Õﬂ≈Ã Õ»∆≈
+// √ë√í√Ä√Ç√à√å √à√å√Ö√ç√ç√é √í√Ä√ä√à√Ö √ç√Ä√ó√Ä√ã√ú√ç√õ√Ö √á√ç√Ä√ó√Ö√ç√à√ü, √Ä √å√Ö√ç√ü√Ö√å √ç√à√Ü√Ö
 mesh["diamond_2"].scale.set(1,1,1);
 mesh["diamond_2"].position.set(0,0,0);
 mesh["diamond_2"].rotation.set(0,0,0);
@@ -236,11 +234,11 @@ mesh["diamond_2"].children[0].geometry.computeVertexNormals();
 
 
 diamond_gem_add(mesh["diamond_2"].children[0],diamond_settings["diamond_2"]);
-// diamond_spark_add(Œ¡⁄≈ “, ŒÀ»◊≈Õ—“¬Œ »— –,»Õ“≈Õ—»¬ÕŒ—“‹,Ã¿—ÿ“¿¡);
+// diamond_spark_add(√é√Å√ö√Ö√ä√í,√ä√é√ã√à√ó√Ö√ç√ë√í√Ç√é √à√ë√ä√ê,√à√ç√í√Ö√ç√ë√à√Ç√ç√é√ë√í√ú,√å√Ä√ë√ò√í√Ä√Å);
 diamond_spark_add(mesh["diamond_2"].children[0],diamond_settings["diamond_2"]);
 
 
-// Ã≈Õﬂ≈Ã  ¿  Õ¿ƒŒ
+// √å√Ö√ç√ü√Ö√å √ä√Ä√ä √ç√Ä√Ñ√é
 mesh["diamond_2"].scale.set(0.005,0.005,0.005);
 mesh["diamond_2"].position.set(0,0.0045,0.01);
 mesh["diamond_2"].rotation.set(-1.57,0,0);
