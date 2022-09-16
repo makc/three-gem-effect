@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+margin:0;
+}
+</style>
+<script type="text/javascript" src="js/libs_origin/three_140.js"></script>
+<script type="text/javascript" src="js/libs_modified/OBJLoader.js"></script>
+<script type="text/javascript" src="js/libs_origin/OrbitControls.js"></script>
+<script type="text/javascript" src="js/libs_origin/GLTFLoader.js"></script>
+<script type="text/javascript" src="js/libs_origin/RGBELoader.js"></script>
+<script type="text/javascript" src="js/libs_origin/DRACOLoader.js"></script>
+<script type="text/javascript" src="js/libs_origin/HDRCubeTextureLoader.js"></script>
+<script type="text/javascript" src='js/libs_modified/postprocessing/EffectComposer.js'></script>
+<script type="text/javascript" src='js/libs_origin/postprocessing/RenderPass.js'></script>
+<script type="text/javascript" src='js/libs_origin/postprocessing/CopyShader.js'></script>
+<script type="text/javascript" src='js/libs_origin/postprocessing/ShaderPass.js'></script>
+<script type="text/javascript" src='js/libs_origin/postprocessing/FXAAShader.js'></script>
+<script type="text/javascript">
+let vs=[];
+let fs=[];
+</script>
+<script type="text/javascript" src='shaders/correction.js'></script>
+<script type="text/javascript" src='shaders/diamond_gem.js'></script>
+<script type="text/javascript" src='shaders/diamond_normal.js'></script>
+<script type="text/javascript" src='shaders/diamond_spark.js'></script>
+<script type="text/javascript" src="js/loader.js"></script>
+<script type="text/javascript" src='js/diamond_gem.js'></script>
+<script type="text/javascript" src='js/diamond_spark.js'></script>
+</head>
+<body>
+<div id="project" style="font-family:tahoma;">
+<div id="loading" style="background:#ffffff;">
+<div style="position:absolute;display:block;top:50%;width:100%;text-align:center;font-family:arial;font-size:40px;color:#ffffff;text-shadow:1px 1px 4px #393342;">LOADED <span id="loading_amount"></span></div>
+</div>
+<canvas id="canvas" width="800" height="600" style="display:block;"></canvas>
+</div>
+<script type="text/javascript">
+
+
+// ____________________ SETTINGS ____________________
+
+
+let diamond_settings=[];
+
+
+diamond_settings["diamond_1"]=[];
+// HERE SET SPARKS SCALE 4, BECAUSE AT THE END THE DIAMOND MODEL ALSO INCREASES BY 4
+diamond_settings["diamond_1"]["1_2"]={quality_px:1024,sparks_scale:4,sparks_amount:10,sparks_intensity:1,
+material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0,y:0,z:0},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:2.417,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_3"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xA2FF15),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_4"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_5"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xF30F1A),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_6"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xFEB8F9),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_7"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xEBEB41),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+diamond_settings["diamond_1"]["1_8"]={quality_px:1024,sparks_scale:4,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0x0DC6EB),envMapIntensity:4,absorbption:{x:0.1,y:0.1,z:0.1},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:1.583,squashFactor:0.98,ray_bounces:5,normalOffset:0,distanceOffset:0,centerOffset:{x:0,y:0,z:0}}};
+
+
+diamond_settings["diamond_2"]={quality_px:1024,sparks_scale:0.005,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0,y:0,z:0},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:2.417,squashFactor:0.98}};
+
+
+diamond_settings["diamond_3"]={quality_px:1024,sparks_scale:1,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0,y:0,z:0},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:2.417,squashFactor:0.98}};
+
+
+diamond_settings["diamond_4"]={quality_px:1024,sparks_scale:1,sparks_amount:3,sparks_intensity:1,
+material:{color:new THREE.Color(0xffffff),envMapIntensity:4,absorbption:{x:0,y:0,z:0},geometryFactor:0.28,rIndexDelta:0.012,refractiveIndex:2.417,squashFactor:0.98}};
+
+
+let canvas_width=window.innerWidth;
+let canvas_height=window.innerHeight;
+
+
+let mat=[];
+let mesh=[];
+let tex=[];
+let raycaster=new THREE.Raycaster();
+raycaster.far=Infinity;
+let vector_1=new THREE.Vector3;
+let vector_2=new THREE.Vector3;
+let vector_3=new THREE.Vector3;
+let vector_4=new THREE.Vector3;
+let vector_5=new THREE.Vector3;
+let vector_6=new THREE.Vector3;
+let quaternion_1=new THREE.Quaternion;
+let matrix4_1=new THREE.Matrix4;
+let matrix4_2=new THREE.Matrix4;
+let matrix4_3=new THREE.Matrix4;
+let matrix4_4=new THREE.Matrix4;
+let matrix4_5=new THREE.Matrix4;
+let matrix4_6=new THREE.Matrix4;
+
+
+const texture_loader=new THREE.TextureLoader(loadingManager);
+const rgbe_loader=new THREE.RGBELoader(loadingManager);
+const gltf_loader=new THREE.GLTFLoader(loadingManager);
+const draco_loader=new THREE.DRACOLoader();
+draco_loader.setDecoderPath("./js/draco/");
+const OBJLoader=new THREE.OBJLoader(loadingManager);
+
+
+tex["diamond_spark_1"]=texture_loader.load("textures/diamond_spark_1.png");
+tex["diamond_spark_2"]=texture_loader.load("textures/diamond_spark_2.png");
+tex["diamond_spark_noise"]=texture_loader.load("textures/diamond_spark_noise.jpg");
+tex["shadow"]=texture_loader.load("textures/shadow.png");
+tex["environment_metal"]=null;
+
+
+let camera=new THREE.PerspectiveCamera(10,window.innerWidth/window.innerHeight,0.01,2000);
+camera.position.set(0,0.1,0.6);
+
+
+let scene=new THREE.Scene();
+scene.background=new THREE.Color(0xfafafa);
+
+
+let scene_diamond=new THREE.Scene();
+let diamond_model=new THREE.Mesh();
+diamond_model.material=new THREE.ShaderMaterial({
+vertexShader:vs["diamond_normal"],
+fragmentShader:fs["diamond_normal"],
+side:THREE.DoubleSide
+});
+scene_diamond.add(diamond_model);
+
+
+let scene_2=new THREE.Scene();
+
+
+rgbe_loader.load("textures/metal.hdr",function(texture){
+tex["environment_metal"]=texture;
+tex["environment_metal"].mapping=THREE.EquirectangularReflectionMapping;
+scene.environment=tex["environment_metal"];
+});
+
+
+// ____________________ CUBIC TEXTURE FOR DIAMOND ____________________
+
+
+let diamond_normal_texture=new THREE.WebGLCubeRenderTarget();
+let diamond_cube_camera=new THREE.CubeCamera(0.0001,1000,diamond_normal_texture);
+
+
+// ____________________ SPARKS ____________________
+
+
+let particles_diamond_spark_a=[];
+
+
+// ____________________ SHADOW ____________________
+
+
+mat["shadow"]=new THREE.MeshBasicMaterial({
+map:tex["shadow"],
+transparent:true
+});
+mesh["shadow"]=new THREE.Mesh(new THREE.PlaneBufferGeometry(1,1),mat["shadow"]);
+mesh["shadow"].geometry.applyMatrix4(new THREE.Matrix4().makeRotationX(-90*(Math.PI/180)));
+scene.add(mesh["shadow"]);
+
+
+// ____________________ DIAMOND GENERATE ____________________
+
+
+function diamond_generate(){
+
+
+// DIAMOND 1
+
+
+// SET EXACTLY SUCH INITIAL VALUES AND CHANGE BELOW
+mesh["diamond"].scale.set(1,1,1);
+mesh["diamond"].position.set(0,0,0);
+mesh["diamond"].rotation.set(0,0,0);
+
+
+mesh["diamond"].traverse(function(child){
+
+
+if(child.name=="1" || child.name=="1_9" || child.name=="1_10"){
+
+
+child.material.color.set(0xffffff);
+child.material.metalness=1;
+child.material.roughness=0;
+
+
+}
+
+
+if(diamond_settings["diamond_1"][child.name]!=undefined){
+
+
+diamond_gem_add(child,diamond_settings["diamond_1"][child.name]);
+// diamond_spark_add(OBJECT, NUMBER OF SPARKS, INTENSITY, SCALE);
+diamond_spark_add(child,diamond_settings["diamond_1"][child.name]);
+
+
+}
+
+
+});
+
+
+// CHANGE AS IT IS NECESSARY
+mesh["diamond"].scale.set(4,4,4);
+mesh["diamond"].rotation.x=-1.57;
+mesh["diamond"].position.y=0.05;
+
+
+diamond_spark_generate(mesh["diamond"],"diamond_spark_1");
+
+
+
+// DIAMOND 2
+
+
+// SET EXACTLY SUCH INITIAL VALUES AND CHANGE BELOW
+mesh["diamond_2"].scale.set(1,1,1);
+mesh["diamond_2"].position.set(0,0,0);
+mesh["diamond_2"].rotation.set(0,0,0);
+
+
+// FLAT NORMALS
+mesh["diamond_2"].children[0].geometry.computeVertexNormals();
+
+
+diamond_gem_add(mesh["diamond_2"].children[0],diamond_settings["diamond_2"]);
+// diamond_spark_add(OBJECT, NUMBER OF SPARKS, INTENSITY, SCALE);
+diamond_spark_add(mesh["diamond_2"].children[0],diamond_settings["diamond_2"]);
+
+
+// CHANGE AS IT IS NECESSARY
+mesh["diamond_2"].scale.set(0.005,0.005,0.005);
+mesh["diamond_2"].position.set(0,0.0045,0.01);
+mesh["diamond_2"].rotation.set(-1.57,0,0);
+diamond_spark_generate(mesh["diamond_2"],"diamond_spark_2");
+
+
+// DIAMOND 3
+
+
+mesh["diamond_3"]=new THREE.Mesh(new THREE.SphereBufferGeometry(0.002,16,16));
+mesh["diamond_3"].geometry.scale(1,1,0.4);
+mesh["diamond_3"].geometry.toNonIndexed();
+mesh["diamond_3"].geometry.computeVertexNormals();
+diamond_gem_add(mesh["diamond_3"],diamond_settings["diamond_3"]);
+diamond_spark_add(mesh["diamond_3"],diamond_settings["diamond_3"]);
+scene.add(mesh["diamond_3"]);
+
+
+mesh["diamond_3"].position.set(-0.019,0.0338,0.009);
+diamond_spark_generate(mesh["diamond_3"],"diamond_spark_3");
+
+
+// DIAMOND 4
+
+
+mesh["diamond_4"]=new THREE.Mesh(new THREE.SphereBufferGeometry(0.002,16,16));
+mesh["diamond_4"].geometry.scale(1,1,0.4);
+mesh["diamond_4"].geometry.toNonIndexed();
+mesh["diamond_4"].geometry.computeVertexNormals();
+diamond_gem_add(mesh["diamond_4"],diamond_settings["diamond_4"]);
+diamond_spark_add(mesh["diamond_4"],diamond_settings["diamond_4"]);
+scene.add(mesh["diamond_4"]);
+
+
+mesh["diamond_4"].position.set(0.019,0.0332,0.009);
+diamond_spark_generate(mesh["diamond_4"],"diamond_spark_4");
+
+
+}
+
+
+// ____________________ diamond.glb ____________________
+
+
+gltf_loader.setDRACOLoader(draco_loader);
+gltf_loader.load("models/diamond.glb",function(object){
+
+
+mesh["diamond"]=object.scene;
+scene.add(mesh["diamond"]);
+
+
+});
+
+
+// ____________________ diamond_2.obj ____________________
+
+
+OBJLoader.load("models/diamond_2.obj",function(object){
+
+
+mesh["diamond_2"]=object;
+scene.add(mesh["diamond_2"]);
+
+
+});
+
+
+// ____________________ RENDERER ____________________
+
+
+let renderer=new THREE.WebGLRenderer({canvas:canvas,antialias:true,alpha:true,transparent:true,premultipliedAlpha:true,physicallyCorrectLights:false,logarithmicDepthBuffer:false});
+renderer.setSize(canvas_width,canvas_height);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.autoClear=false;
+//renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMapping=THREE.LinearToneMapping;
+renderer.toneMappingExposure=1.3;
+renderer.outputEncoding=THREE.sRGBEncoding;
+
+
+const renderPass=new THREE.RenderPass(scene,camera);
+let fxaaPass=new THREE.ShaderPass(THREE.FXAAShader );
+const pixelRatio=renderer.getPixelRatio();
+fxaaPass.material.uniforms['resolution'].value.x=1/(window.innerWidth*pixelRatio);
+fxaaPass.material.uniforms['resolution'].value.y=1/(window.innerHeight*pixelRatio);
+
+
+const correction_pass=new THREE.ShaderPass(THREE.correction);
+correction_pass.material.uniforms['color'].value=[1,1,1];
+correction_pass.material.uniforms['brightness'].value=0.0;
+correction_pass.material.uniforms['contrast'].value=0.0;
+correction_pass.material.uniforms['saturation'].value=1.0;
+correction_pass.material.uniforms['gamma'].value=2.2;
+
+
+renderer.info.autoReset=false;
+let composer=new THREE.EffectComposer(renderer);
+composer.addPass(renderPass);
+composer.addPass(fxaaPass);
+composer.addPass(correction_pass);
+
+
+tex["diamond_envMap"]=new THREE.HDRCubeTextureLoader(loadingManager).setPath("textures/gem/").load(["px.hdr","nx.hdr","py.hdr","ny.hdr","pz.hdr","nz.hdr"],function(){
+let pmremGenerator=new THREE.PMREMGenerator(renderer);
+hdrCubeRenderTarget=pmremGenerator.fromCubemap(tex["diamond_envMap"]);
+pmremGenerator.dispose();
+tex["diamond_envMap"].magFilter=THREE.LinearFilter;
+tex["diamond_envMap"].migFilter=THREE.LinearFilter;
+tex["diamond_envMap"].needsUpdate=true;
+});
+
+
+// ____________________ CONTROLS ____________________
+
+
+const controls=new THREE.OrbitControls(camera,renderer.domElement);
+
+
+controls.enablePan=true;
+controls.autoRotate=true;
+controls.autoRotateSpeed=1.0;
+controls.minDistance=0.05;
+controls.maxDistance=2.0;
+controls.target.set(0,0.03,0);
+
+
+// ____________________ RESIZE ____________________
+
+
+window.addEventListener("resize",onWindowResize);
+
+
+function onWindowResize(){
+
+
+camera.aspect=window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+
+}
+
+
+// ____________________ LOOP ____________________
+
+
+function loop(){
+requestAnimationFrame(loop)
+controls.update();
+composer.render();
+renderer.clearDepth();
+renderer.render(scene_2,camera);
+}
+
+
+</script>
+</body>
+</html>
